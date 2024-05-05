@@ -5,3 +5,5 @@ rootProject.name = "AKHS"
 include("akhs-discord")
 include("akhs-telegram")
 include("akhs-twitch")
+include("akhs-core")
+include("akhs-youtube")
