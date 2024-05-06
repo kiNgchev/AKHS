@@ -1,0 +1,8 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: "akhs-discord"
+  docker:
+    compose:
+      file: env/compose.yaml
