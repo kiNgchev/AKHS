@@ -72,7 +72,7 @@ allprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.liquibase:liquibase-core")
         developmentOnly("org.springframework.boot:spring-boot-devtools")
-        developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+        implementation("org.springframework.boot:spring-boot-docker-compose")
         runtimeOnly("org.postgresql:postgresql")
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
