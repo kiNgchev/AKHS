@@ -3,12 +3,12 @@ package net.kingchev.core.kafka
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.annotation.EnableKafka
-import org.springframework.kafka.listener.ContainerProperties
+import org.springframework.kafka.listener.ContainerProperties.AckMode
 import java.time.Duration
 
 @EnableKafka
 @Configuration
-class KafkaConfiguration(private val kafkaProperties: KafkaProperties) {
+class KafkaConfiguration(kafkaProperties: KafkaProperties) {
     init {
         kafkaProperties.bootstrapServers = listOf("localhost:29092")
         kafkaProperties.consumer.apply { consumer() }
@@ -36,7 +36,7 @@ class KafkaConfiguration(private val kafkaProperties: KafkaProperties) {
         }
 
         private val listener: KafkaProperties.Listener.() -> Unit = {
-            ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+            ackMode = AckMode.MANUAL_IMMEDIATE
             concurrency = 1
             pollTimeout = Duration.ofMillis(1800000)
         }
