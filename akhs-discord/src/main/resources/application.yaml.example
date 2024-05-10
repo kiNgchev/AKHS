@@ -6,3 +6,8 @@ spring:
   docker:
     compose:
       file: env/compose.yaml
+
+akhs:
+  application:
+    token: "your-token"
+    news-channel: "your-channel-id"
