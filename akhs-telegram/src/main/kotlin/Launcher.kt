@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Import
     CommonConfiguration::class
 )
 @SpringBootApplication
-class AkhsDiscordApplication
+class AkhsTelegramApplication
 
 object Launcher {
     @JvmStatic
     fun main(args: Array<String>) {
-        runApplication<AkhsDiscordApplication>(*args)
+        runApplication<AkhsTelegramApplication>(*args)
     }
 }
