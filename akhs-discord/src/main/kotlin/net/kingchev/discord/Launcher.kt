@@ -1,12 +1,12 @@
-package net.kingchev
+package net.kingchev.discord
 
-import net.kingchev.core.config.CommonConfiguration
+import net.kingchev.discord.config.DiscordConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
 
 @Import(
-    CommonConfiguration::class
+    DiscordConfiguration::class
 )
 @SpringBootApplication
 class AkhsDiscordApplication
