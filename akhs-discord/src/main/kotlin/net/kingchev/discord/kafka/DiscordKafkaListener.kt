@@ -33,7 +33,7 @@ class DiscordKafkaListener(
     ) {
         val message = gson.fromJson(data, CrossPostingMessage::class.java)
 
-        if (message.source == "") return
+        if (message.source == "discord") return
 
         val channel = jda.getTextChannelById(
             properties.newsChannel ?: throw NullPointerException("News channel must not be null!")
