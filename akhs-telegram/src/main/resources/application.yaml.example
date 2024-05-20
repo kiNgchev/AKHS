@@ -2,7 +2,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: "akhs-discord"
+    name: "akhs-telegram"
   docker:
     compose:
       file: env/compose.yaml
@@ -11,7 +11,7 @@ akhs:
   application:
     token: "your-token"
     news-channel: "your-channel-id"
-    color: 0x7567ff #color must in hex-format
+    username: "@kingchev_hub_bot"
 
 server:
-  port: 8080
+  port: 8081
