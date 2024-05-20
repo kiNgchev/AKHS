@@ -1,4 +1,4 @@
-package net.kingchev
+package net.kingchev.telegram
 
 import net.kingchev.core.config.CommonConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
