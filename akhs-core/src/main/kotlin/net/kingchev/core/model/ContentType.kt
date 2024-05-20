@@ -1,6 +1,6 @@
 package net.kingchev.core.model
 
-enum class AttachmentType {
+enum class ContentType {
     IMAGE,
     VIDEO,
     VOICE,

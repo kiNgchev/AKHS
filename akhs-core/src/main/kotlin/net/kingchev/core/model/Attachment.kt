@@ -1,9 +1,7 @@
 package net.kingchev.core.model
 
-import java.io.File
-
 data class Attachment(
-    var id: String,
-    var type: AttachmentType,
-    var attachment: File
+    var fileName: String,
+    var contentType: ContentType,
+    var attachment: List<Byte>
 )
