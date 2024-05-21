@@ -29,6 +29,8 @@ services:
       KAFKA_CFG_LISTENERS: CLIENT://:9092,EXTERNAL://:9093
       KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
       ALLOW_PLAINTEXT_LISTENER: 'yes'
+    volumes:
+      - "./config/kafka:/etc/systemd/system/kafka.service"
   postgres:
     image: postgres:latest
     shm_size: 128mb
@@ -41,7 +43,7 @@ services:
       - 5432:5432
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U habrpguser -d habrdb" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d akhs" ]
       interval: 10s
       timeout: 5s
       retries: 5
