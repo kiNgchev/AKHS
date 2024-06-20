@@ -55,12 +55,19 @@ allprojects {
         compileOnly {
             extendsFrom(configurations.annotationProcessor.get())
         }
+
+        allOpen {
+            annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embedabble")
+        }
+
         all {
             exclude("commons-logging", "commons-logging")
         }
     }
 
     dependencies {
+        //Okhttp
+        implementation("com.squareup.okhttp3:okhttp:4.12.0")
         //Gson
         implementation("com.google.code.gson:gson:2.10.1")
         implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
