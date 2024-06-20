@@ -30,7 +30,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
       ALLOW_PLAINTEXT_LISTENER: 'yes'
     volumes:
-      - "./config/kafka:/etc/systemd/system/kafka.service"
+      - "./config/kafka/server.properties:/opt/bitnami/kafka/config/server.properties"
   postgres:
     image: postgres:latest
     shm_size: 128mb
