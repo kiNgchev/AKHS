@@ -1,13 +1,48 @@
 package net.kingchev.core.persistence
 
-import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.jdbc.datasource.DriverManagerDataSource
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
 import org.springframework.transaction.annotation.EnableTransactionManagement
+import java.util.Properties
+import javax.sql.DataSource
 
 @Configuration
-@EntityScan(basePackages = ["net.kingchev.core.persistence.entity"])
 @EnableJpaRepositories(basePackages = ["net.kingchev.core.persistence.repository"])
 @EnableTransactionManagement
-class PersistenceConfiguration
-//Maybe in the future I'll add anything in this config
+@EnableAutoConfiguration(exclude = [DataSourceAutoConfiguration::class])
+class PersistenceConfiguration {
+    @Bean
+    fun dataSource(): DataSource {
+        val dataSource = DriverManagerDataSource()
+        dataSource.setDriverClassName("org.postgresql.Driver")
+        dataSource.username = "postgres"
+        dataSource.password = "secret"
+        dataSource.url = "jdbc:postgresql://localhost:5432/akhs?createDatabaseIfNotExist=true"
+        return dataSource
+    }
+
+    @Bean
+    fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean {
+        val vendor = HibernateJpaVendorAdapter()
+
+        val em = LocalContainerEntityManagerFactoryBean()
+        em.dataSource = dataSource()
+        em.jpaVendorAdapter = vendor
+        em.setJpaProperties(jpaProperties())
+        em.setPackagesToScan("net.kingchev.core.persistence.entity")
+
+        return em
+    }
+
+    fun jpaProperties(): Properties {
+        val properties = Properties()
+        properties.setProperty("hibernate.ddl-auto", "create-drop")
+        return properties
+    }
+}
