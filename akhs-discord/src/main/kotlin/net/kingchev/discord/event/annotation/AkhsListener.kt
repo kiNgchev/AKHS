@@ -6,5 +6,5 @@ import java.lang.annotation.Inherited
 @Component
 @Inherited
 @Retention(AnnotationRetention.RUNTIME)
-@Target(allowedTargets = [AnnotationTarget.CLASS])
+@Target(AnnotationTarget.CLASS)
 annotation class AkhsListener
