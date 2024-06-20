@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class DiscordProperties {
     var token: String? = null
     var newsChannel: String? = null
+    var logsChannel: String? = null
     var color: Int = 0x7567ff
 }

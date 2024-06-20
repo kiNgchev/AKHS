@@ -2,8 +2,8 @@ package net.kingchev.discord.config
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.requests.GatewayIntent.getIntents
 import net.dv8tion.jda.api.requests.GatewayIntent.ALL_INTENTS
+import net.dv8tion.jda.api.requests.GatewayIntent.getIntents
 import net.dv8tion.jda.api.utils.MemberCachePolicy.ALL
 import net.kingchev.core.config.CommonConfiguration
 import net.kingchev.discord.event.service.EventHolderService
