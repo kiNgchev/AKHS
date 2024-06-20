@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: "akhs-twitch"
+  docker:
+    compose:
+      file: env/compose.yaml
+
+akhs:
+  application:
+    tokens:
+      client-id: "your-client-id"
+      client-secret: "your-client-secret"
+      irc: "your-irc"
+    twitch-channel: "your-channel"
+
+server:
+  port: 8082

@@ -11,7 +11,8 @@ akhs:
   application:
     token: "your-token"
     news-channel: "your-channel-id"
-    username: "@kingchev_hub_bot"
+    username: "your-bot-username"
+    logs-channel: "your-channel-id"
 
 server:
   port: 8081
