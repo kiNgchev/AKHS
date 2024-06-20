@@ -7,4 +7,5 @@ class TelegramProperties {
     var token: String? = null
     var newsChannel: String? = null
     var username: String? = null
+    var logsChannel: String? = null
 }
