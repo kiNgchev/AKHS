@@ -11,21 +11,13 @@ import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.methods.GetFile
 import org.telegram.telegrambots.meta.api.objects.File
 import org.telegram.telegrambots.meta.api.objects.Update
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class ExtTelegramClient(
     private val props: TelegramProperties,
     private val telegramApi: TelegramBotsApi,
     private val kafkaTemplate: KafkaTemplate<String, CrosspostingMessage>
 ) : TelegramLongPollingBot(DefaultBotOptions(), props.token) {
-    @Volatile
-    private var medias =  mutableListOf<Attachment>()
-
-    @Volatile
-    private var size = 0
-
-    @Volatile
-    private var isExecuted = false
-
     init {
         telegramApi.registerBot(this)
         logger.info("Telegram client $botUsername has been started!")

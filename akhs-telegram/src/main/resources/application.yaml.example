@@ -5,7 +5,7 @@ spring:
     name: "akhs-telegram"
   docker:
     compose:
-      file: env/compose.yaml
+      file: ../env/compose.yaml
 
 akhs:
   application:

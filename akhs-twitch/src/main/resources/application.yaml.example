@@ -3,7 +3,7 @@ spring:
     name: "akhs-twitch"
   docker:
     compose:
-      file: env/compose.yaml
+      file: ../env/compose.yaml
 
 akhs:
   application:
