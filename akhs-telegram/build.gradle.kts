@@ -1,5 +1,9 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+plugins {
+    application
+}
+
 dependencies {
     implementation(project(":akhs-core"))
     implementation("org.telegram:telegrambots:6.9.7.1")
@@ -8,6 +12,10 @@ dependencies {
 }
 
 tasks.withType<BootJar> {
+    enabled = false
+}
+
+application {
     mainClass = "net.kingchev.telegram.Launcher"
 }
 

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 buildscript {
     val kotlinVersion       = "1.8.20"
@@ -100,7 +101,9 @@ allprojects {
 
 }
 
-
+tasks.withType<BootJar> {
+    enabled = false
+}
 
 repositories {
     mavenCentral()
