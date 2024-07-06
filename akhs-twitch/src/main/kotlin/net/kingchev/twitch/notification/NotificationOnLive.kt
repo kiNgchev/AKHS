@@ -1,18 +1,17 @@
 package net.kingchev.twitch.notification
 
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
-import com.github.twitch4j.ITwitchClient
 import com.github.twitch4j.events.ChannelGoLiveEvent
 import net.kingchev.core.kafka.TWITCH_NOTIFICATION
 import net.kingchev.core.model.TwitchNotificationMessage
 import net.kingchev.core.model.TwitchNotificationType
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
 @Component
 class NotificationOnLive(
-    private val twitchClient: ITwitchClient,
     private val eventHandler: SimpleEventHandler,
     private val kafkaTemplate: KafkaTemplate<String, TwitchNotificationMessage>
 ) {
@@ -34,6 +33,6 @@ class NotificationOnLive(
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(NotificationOnLive::class.java)
+        val logger: Logger = LoggerFactory.getLogger(NotificationOnLive::class.java)
     }
 }

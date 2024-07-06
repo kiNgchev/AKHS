@@ -1,7 +1,9 @@
 package net.kingchev.telegram.component
 
 import net.kingchev.core.kafka.CROSSPOSTING
-import net.kingchev.core.model.*
+import net.kingchev.core.model.Attachment
+import net.kingchev.core.model.ContentType
+import net.kingchev.core.model.CrosspostingMessage
 import net.kingchev.telegram.config.TelegramProperties
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
@@ -11,11 +13,10 @@ import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.methods.GetFile
 import org.telegram.telegrambots.meta.api.objects.File
 import org.telegram.telegrambots.meta.api.objects.Update
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class ExtTelegramClient(
     private val props: TelegramProperties,
-    private val telegramApi: TelegramBotsApi,
+    telegramApi: TelegramBotsApi,
     private val kafkaTemplate: KafkaTemplate<String, CrosspostingMessage>
 ) : TelegramLongPollingBot(DefaultBotOptions(), props.token) {
     init {

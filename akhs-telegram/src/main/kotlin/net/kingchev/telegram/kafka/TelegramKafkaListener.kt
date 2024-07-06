@@ -3,8 +3,8 @@ package net.kingchev.telegram.kafka
 import net.kingchev.core.kafka.CROSSPOSTING
 import net.kingchev.core.kafka.TWITCH_NOTIFICATION
 import net.kingchev.core.model.*
-import net.kingchev.telegram.config.TelegramProperties
 import net.kingchev.telegram.component.ExtTelegramClient
+import net.kingchev.telegram.config.TelegramProperties
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener

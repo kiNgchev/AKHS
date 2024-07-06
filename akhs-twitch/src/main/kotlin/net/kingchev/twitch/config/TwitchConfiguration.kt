@@ -3,11 +3,8 @@ package net.kingchev.twitch.config
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.ITwitchClient
-import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import net.kingchev.core.config.CommonConfiguration
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
