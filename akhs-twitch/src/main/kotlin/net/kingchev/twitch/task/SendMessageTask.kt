@@ -16,7 +16,10 @@ class SendMessageTask(
 
     private fun onGoLive(event: ChannelGoLiveEvent) {
         while (true) {
-            twitchClient.chat.sendMessage(event.channel.name, "Не забывайте подписываться на наш телеграм канал! https://t.me/k1ngchev")
+            twitchClient.chat.sendMessage(
+                event.channel.name,
+                "Не забывайте подписываться на наш телеграм канал! https://t.me/k1ngchev"
+            )
             Thread.sleep(30 * 60 * 1000)
         }
     }

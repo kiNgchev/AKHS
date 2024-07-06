@@ -2,10 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 buildscript {
-    val kotlinVersion       = "1.8.20"
-    val kotlinExtVersion    = "2.0.0-Beta2"
-    val springBootVersion   = "3.2.2"
-    val hibernateVersion    = "6.4.1.Final"
+    val kotlinVersion = "1.8.20"
+    val kotlinExtVersion = "2.0.0-Beta2"
+    val springBootVersion = "3.2.2"
+    val hibernateVersion = "6.4.1.Final"
     val author = "kiNgchev"
 
     repositories {
@@ -58,7 +58,11 @@ allprojects {
         }
 
         allOpen {
-            annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embedabble")
+            annotations(
+                "javax.persistence.Entity",
+                "javax.persistence.MappedSuperclass",
+                "javax.persistence.Embedabble"
+            )
         }
 
         all {

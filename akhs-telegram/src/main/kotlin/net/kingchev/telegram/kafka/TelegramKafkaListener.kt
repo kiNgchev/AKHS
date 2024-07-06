@@ -100,13 +100,19 @@ class TelegramKafkaListener(
     private inline fun <reified T : InputMedia> processMedia(attachment: Attachment): T {
         val input = T::class.java.getDeclaredConstructor().newInstance()
 
-        val setMediaMethod = T::class.java.superclass.getDeclaredMethod("setMedia", InputStream::class.java, String::class.java)
+        val setMediaMethod =
+            T::class.java.superclass.getDeclaredMethod("setMedia", InputStream::class.java, String::class.java)
         setMediaMethod.invoke(input, ByteArrayInputStream(attachment.bytes), attachment.fileName)
 
         return input
     }
 
-    private inline fun <reified T : SendMediaBotMethod<Message>> processMedia(chatId: String, caption: String, field: String, attachment: Attachment): T {
+    private inline fun <reified T : SendMediaBotMethod<Message>> processMedia(
+        chatId: String,
+        caption: String,
+        field: String,
+        attachment: Attachment
+    ): T {
         val method = T::class.java.getDeclaredConstructor().newInstance()
 
         val chatIdField = method::class.java.getDeclaredField("chatId")

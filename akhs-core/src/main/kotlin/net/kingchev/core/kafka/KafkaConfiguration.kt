@@ -38,7 +38,7 @@ const val YOUTUBE_NOTIFICATION = "akhs.youtube.notification"
 class KafkaConfiguration {
     class Topics {
         @Bean
-        fun topicCrossposting(): NewTopic  {
+        fun topicCrossposting(): NewTopic {
             return TopicBuilder
                 .name(CROSSPOSTING)
                 .configs(topicProps())
@@ -71,7 +71,11 @@ class KafkaConfiguration {
         @Bean
         fun consumerFactory(): ConsumerFactory<String, CrosspostingMessage> {
             val props = consumerProps()
-            return DefaultKafkaConsumerFactory(props, ErrorHandlingDeserializer(StringDeserializer()), ErrorHandlingDeserializer(JsonDeserializer()))
+            return DefaultKafkaConsumerFactory(
+                props,
+                ErrorHandlingDeserializer(StringDeserializer()),
+                ErrorHandlingDeserializer(JsonDeserializer())
+            )
         }
 
         @Bean
@@ -100,7 +104,11 @@ class KafkaConfiguration {
         @Bean
         fun consumerFactoryTwitch(): ConsumerFactory<String, TwitchNotificationMessage> {
             val props = consumerProps()
-            return DefaultKafkaConsumerFactory(props, ErrorHandlingDeserializer(StringDeserializer()), ErrorHandlingDeserializer(JsonDeserializer()))
+            return DefaultKafkaConsumerFactory(
+                props,
+                ErrorHandlingDeserializer(StringDeserializer()),
+                ErrorHandlingDeserializer(JsonDeserializer())
+            )
         }
 
         @Bean
@@ -141,7 +149,7 @@ class KafkaConfiguration {
             map[ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG] = "104857600"
             map[ConsumerConfig.FETCH_MAX_BYTES_CONFIG] = "104857600"
             map[JsonSerializer.ADD_TYPE_INFO_HEADERS] = false
-            map[JsonDeserializer.TRUSTED_PACKAGES] ="net.kingchev.core.model"
+            map[JsonDeserializer.TRUSTED_PACKAGES] = "net.kingchev.core.model"
             return map
         }
 
