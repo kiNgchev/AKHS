@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder
 import net.kingchev.core.kafka.CROSSPOSTING
 import net.kingchev.core.kafka.TWITCH_NOTIFICATION
 import net.kingchev.core.model.CrosspostingMessage
-import net.kingchev.core.model.TwitchNotificationMessage
+import net.kingchev.core.model.NotificationMessage
 import net.kingchev.discord.config.DiscordProperties
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +18,9 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
+import java.util.UUID
 import java.util.stream.Collectors
+import kotlin.toString
 
 @Service
 class DiscordKafkaListener(
@@ -64,7 +66,7 @@ class DiscordKafkaListener(
 
     @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "discord-listener-twitch")
     fun handleTwitchNotification(
-        @Payload message: TwitchNotificationMessage,
+        @Payload message: NotificationMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
         acknowledgment: Acknowledgment
     ) {

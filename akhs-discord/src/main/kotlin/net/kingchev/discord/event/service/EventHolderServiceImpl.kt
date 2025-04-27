@@ -26,7 +26,5 @@ class EventHolderServiceImpl : EventHolderService {
         }
     }
 
-    override fun getEvents(): Array<Event> {
-        return events.toTypedArray()
-    }
+    override fun getEvents(): Array<Event> = events.toTypedArray()
 }

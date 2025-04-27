@@ -1,36 +1,48 @@
+name: 'akhs-env'
+
 services:
   zookeeper:
-    image: bitnami/zookeeper:latest
-    restart: always
-    ports:
-      - 2181:2181
-    expose:
-      - 2181
+    image: confluentinc/cp-zookeeper:latest
     environment:
-      ALLOW_ANONYMOUS_LOGIN: 'yes'
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-      ZOOKEEPER_SYNC_LIMIT: 2
-  kafka:
-    image: bitnami/kafka:latest
-    restart: always
     ports:
-      - 9092:9092
-      - 9093:9093
+      - "2181:2181"
+    networks:
+      - kafka
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
+    ports:
+      - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_CFG_LISTENERS=PLAINTEXT: //:9092
-      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://localhost:9092,EXTERNAL://localhost:9093
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_CFG_LISTENERS: CLIENT://:9092,EXTERNAL://:9093
-      KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
-      ALLOW_PLAINTEXT_LISTENER: 'yes'
-    volumes:
-      - "./config/kafka/server.properties:/opt/bitnami/kafka/config/server.properties"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - kafka
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8090:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=host.docker.internal:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    links:
+      - kafka
+      - zookeeper
+    networks:
+      - kafka
+
   postgres:
     image: postgres:latest
     shm_size: 128mb
@@ -40,7 +52,7 @@ services:
       - POSTGRES_USER=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
-      - 5432:5432
+      - "5432:5432"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d akhs" ]
@@ -58,4 +70,10 @@ services:
   redis:
     image: redis:latest
     ports:
-      - 6379:6379
+      - "6379:6379"
+
+networks:
+  kafka:
+    driver: bridge
+
+

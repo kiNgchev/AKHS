@@ -3,6 +3,15 @@ package net.kingchev.core.model
 import java.io.Serial
 import java.io.Serializable
 
+enum class ContentType {
+    UNDEFINED,
+    IMAGE,
+    VIDEO,
+    AUDIO,
+    VOICE,
+    DOCUMENT
+}
+
 data class Attachment(
     var fileName: String,
     var contentType: ContentType,

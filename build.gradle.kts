@@ -75,6 +75,7 @@ allprojects {
         implementation("com.squareup.okhttp3:okhttp:4.12.0")
         //Gson
         implementation("com.google.code.gson:gson:2.10.1")
+        implementation("org.springframework.data:spring-data-envers")
         implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("org.springframework.boot:spring-boot-starter-web")
@@ -89,7 +90,6 @@ allprojects {
         annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.springframework.kafka:spring-kafka-test")
-
     }
 
     tasks.withType<KotlinCompile> {

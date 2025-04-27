@@ -22,12 +22,10 @@ class TelegramConfiguration(
 
     @Bean
     @Scope("singleton")
-    fun telegramClient(): ExtTelegramClient {
-        return ExtTelegramClient(props, telegramBotApi(), kafkaTemplate)
-    }
+    fun telegramClient(): ExtTelegramClient =
+        ExtTelegramClient(props, telegramBotApi(), kafkaTemplate)
 
     @Bean
-    fun telegramBotApi(): TelegramBotsApi {
-        return TelegramBotsApi(DefaultBotSession::class.java)
-    }
+    fun telegramBotApi(): TelegramBotsApi =
+        TelegramBotsApi(DefaultBotSession::class.java)
 }

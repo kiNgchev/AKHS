@@ -9,17 +9,16 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
-@Import(
-    CommonConfiguration::class
-)
+@Import(CommonConfiguration::class)
 @Configuration
 class TwitchConfiguration(
     private val properties: TwitchProperties
 ) {
     @Bean
-    fun simpleEventHandler(twitchClient: ITwitchClient): SimpleEventHandler {
-        return twitchClient.eventManager.getEventHandler(SimpleEventHandler::class.java)
-    }
+    fun simpleEventHandler(twitchClient: ITwitchClient): SimpleEventHandler =
+        twitchClient
+            .eventManager
+            .getEventHandler(SimpleEventHandler::class.java)
 
     @Bean
     fun twitchClient(): ITwitchClient {
@@ -30,12 +29,9 @@ class TwitchConfiguration(
             .withClientSecret(properties.tokens.clientSecret)
             .withEnableHelix(true)
             .build()
-        properties.twitchChannel.forEach {
-            client.chat.joinChannel(it)
-        }
 
+        properties.twitchChannel.forEach(client.chat::joinChannel)
         client.clientHelper.enableStreamEventListener(properties.twitchChannel)
-
         return client
     }
 }

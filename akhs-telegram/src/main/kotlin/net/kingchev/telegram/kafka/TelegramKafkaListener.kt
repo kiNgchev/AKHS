@@ -79,7 +79,7 @@ class TelegramKafkaListener(
 
     @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "telegram-listener-twitch")
     fun handleTwitchNotification(
-        @Payload message: TwitchNotificationMessage,
+        @Payload message: NotificationMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
         acknowledgment: Acknowledgment
     ) {

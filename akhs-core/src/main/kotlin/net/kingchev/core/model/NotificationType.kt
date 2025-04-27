@@ -1,5 +1,5 @@
 package net.kingchev.core.model
 
-enum class TwitchNotificationType {
+enum class NotificationType {
     LIVE_NOTIFICATION
 }

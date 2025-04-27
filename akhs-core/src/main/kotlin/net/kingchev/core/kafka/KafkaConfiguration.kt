@@ -1,7 +1,7 @@
 package net.kingchev.core.kafka
 
 import net.kingchev.core.model.CrosspostingMessage
-import net.kingchev.core.model.TwitchNotificationMessage
+import net.kingchev.core.model.NotificationMessage
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
@@ -22,7 +22,6 @@ import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 import org.springframework.kafka.support.serializer.JsonDeserializer
 import org.springframework.kafka.support.serializer.JsonSerializer
 
-
 const val CROSSPOSTING = "akhs.cross-posting"
 const val TWITCH_NOTIFICATION = "akhs.twitch.notification"
 const val YOUTUBE_NOTIFICATION = "akhs.youtube.notification"
@@ -38,45 +37,35 @@ const val YOUTUBE_NOTIFICATION = "akhs.youtube.notification"
 class KafkaConfiguration {
     class Topics {
         @Bean
-        fun topicCrossposting(): NewTopic {
-            return TopicBuilder
-                .name(CROSSPOSTING)
-                .configs(topicProps())
-                .build()
-        }
+        fun topicCrossposting() = TopicBuilder
+            .name(CROSSPOSTING)
+            .configs(topicProps())
+            .build()
 
         @Bean
-        fun topicTwitchNotification(): NewTopic {
-            return TopicBuilder
-                .name(TWITCH_NOTIFICATION)
-                .configs(topicProps())
-                .build()
-        }
+        fun topicTwitchNotification() = TopicBuilder
+            .name(TWITCH_NOTIFICATION)
+            .configs(topicProps())
+            .build()
 
         @Bean
-        fun topicYoutubeNotification(): NewTopic {
-            return TopicBuilder
-                .name(YOUTUBE_NOTIFICATION)
-                .configs(topicProps())
-                .build()
-        }
+        fun topicYoutubeNotification() = TopicBuilder
+            .name(YOUTUBE_NOTIFICATION)
+            .configs(topicProps())
+            .build()
     }
 
     class Crossposting {
         @Bean
-        fun kafkaTemplate(): KafkaTemplate<String, CrosspostingMessage> {
-            return KafkaTemplate(producerFactory())
-        }
+        fun kafkaTemplate() = KafkaTemplate(producerFactory())
 
         @Bean
-        fun consumerFactory(): ConsumerFactory<String, CrosspostingMessage> {
-            val props = consumerProps()
-            return DefaultKafkaConsumerFactory(
-                props,
+        fun consumerFactory(): ConsumerFactory<String, CrosspostingMessage> =
+            DefaultKafkaConsumerFactory(
+                consumerProps(),
                 ErrorHandlingDeserializer(StringDeserializer()),
                 ErrorHandlingDeserializer(JsonDeserializer())
             )
-        }
 
         @Bean
         fun producerFactory(): ProducerFactory<String, CrosspostingMessage> {
@@ -84,48 +73,32 @@ class KafkaConfiguration {
         }
 
         @Bean
-        fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, CrosspostingMessage> {
-            val factory = ConcurrentKafkaListenerContainerFactory<String, CrosspostingMessage>()
-            factory.consumerFactory = consumerFactory()
-            factory.containerProperties.ackMode = AckMode.MANUAL
-            factory.containerProperties.pollTimeout = 1800000
-            factory.containerProperties.clientId = "akhs"
-            factory.setConcurrency(2)
-            return factory
-        }
+        fun kafkaListenerContainerFactory() =
+            ConcurrentKafkaListenerContainerFactory<String, CrosspostingMessage>()
+                .apply(kafkaListenerContainerFactory(consumerFactory()))
     }
 
     class TwitchNotification {
         @Bean
-        fun kafkaTemplateTwitch(): KafkaTemplate<String, TwitchNotificationMessage> {
-            return KafkaTemplate(producerFactoryTwitch())
-        }
+        fun kafkaTemplateTwitch() =
+            KafkaTemplate(producerFactoryTwitch())
 
         @Bean
-        fun consumerFactoryTwitch(): ConsumerFactory<String, TwitchNotificationMessage> {
-            val props = consumerProps()
-            return DefaultKafkaConsumerFactory(
-                props,
+        fun consumerFactoryTwitch(): ConsumerFactory<String, NotificationMessage> =
+            DefaultKafkaConsumerFactory(
+                consumerProps(),
                 ErrorHandlingDeserializer(StringDeserializer()),
                 ErrorHandlingDeserializer(JsonDeserializer())
             )
-        }
 
         @Bean
-        fun producerFactoryTwitch(): ProducerFactory<String, TwitchNotificationMessage> {
-            return DefaultKafkaProducerFactory(producerProps())
-        }
+        fun producerFactoryTwitch(): ProducerFactory<String, NotificationMessage> =
+            DefaultKafkaProducerFactory(producerProps())
 
         @Bean
-        fun kafkaListenerContainerFactoryTwitch(): ConcurrentKafkaListenerContainerFactory<String, TwitchNotificationMessage> {
-            val factory = ConcurrentKafkaListenerContainerFactory<String, TwitchNotificationMessage>()
-            factory.consumerFactory = consumerFactoryTwitch()
-            factory.containerProperties.ackMode = AckMode.MANUAL
-            factory.containerProperties.pollTimeout = 1800000
-            factory.containerProperties.clientId = "akhs"
-            factory.setConcurrency(2)
-            return factory
-        }
+        fun kafkaListenerContainerFactoryTwitch() =
+            ConcurrentKafkaListenerContainerFactory<String, NotificationMessage>()
+                .apply(kafkaListenerContainerFactory(consumerFactoryTwitch()))
     }
 
     companion object {
@@ -162,6 +135,14 @@ class KafkaConfiguration {
             map[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
             map[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
             return map
+        }
+
+        private fun <E>kafkaListenerContainerFactory(consumer: ConsumerFactory<String, E>): ConcurrentKafkaListenerContainerFactory<String, E>.() -> Unit = {
+            consumerFactory = consumer
+            containerProperties.ackMode = AckMode.MANUAL
+            containerProperties.pollTimeout = 1800000
+            containerProperties.clientId = "akhs"
+            setConcurrency(2)
         }
     }
 }

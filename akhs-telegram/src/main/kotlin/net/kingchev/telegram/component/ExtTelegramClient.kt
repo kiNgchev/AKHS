@@ -24,9 +24,8 @@ class ExtTelegramClient(
         logger.info("Telegram client $botUsername has been started!")
     }
 
-    override fun getBotUsername(): String {
-        return props.username ?: throw NullPointerException("Username is mustn't be null!")
-    }
+    override fun getBotUsername(): String =
+        props.username ?: throw NullPointerException("Username is mustn't be null!")
 
     override fun onUpdateReceived(update: Update) {
         if (update.channelPost == null) return
@@ -73,8 +72,7 @@ class ExtTelegramClient(
 
     override fun onUpdatesReceived(updates: MutableList<Update>) {
         if (updates.size == 1) {
-            onUpdateReceived(updates.first())
-            return
+            return onUpdateReceived(updates.first())
         }
 
         val mediaGroupId = updates.first().channelPost.mediaGroupId
@@ -112,7 +110,10 @@ class ExtTelegramClient(
     }
 
     private fun processAttachment(fileId: String, type: ContentType, vararg objects: Pair<String, Any>): Attachment {
-        val fileName = getFile(fileId).getFileUrl(this.props.token).split("/").last()
+        val fileName = getFile(fileId)
+            .getFileUrl(this.props.token)
+            .split("/")
+            .last()
         val attachment = downloadFile(getFile(fileId), java.io.File("/temp/${fileName}"))
         return Attachment(attachment.name, type, attachment.readBytes(), hashMapOf(*objects))
     }
