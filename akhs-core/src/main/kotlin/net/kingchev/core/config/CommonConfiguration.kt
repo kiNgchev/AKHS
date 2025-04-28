@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import liquibase.integration.spring.SpringLiquibase
 import net.kingchev.core.kafka.KafkaConfiguration
 import net.kingchev.core.persistence.PersistenceConfiguration
-import okhttp3.OkHttpClient
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -37,10 +36,5 @@ class CommonConfiguration {
         //setting the path to changelog
         props.changeLog = "classpath:/db/changelog/db.changelog-master.yaml"
         return props
-    }
-
-    @Bean
-    fun okhttp(): OkHttpClient {
-        return OkHttpClient()
     }
 }

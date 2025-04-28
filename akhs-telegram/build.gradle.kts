@@ -1,6 +1,8 @@
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+    `common-module`
+    spring
     application
 }
 

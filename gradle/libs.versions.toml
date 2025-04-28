@@ -1,0 +1,99 @@
+[versions]
+kotlin = "2.0.0"
+kotlinx-coroutines = "1.9.0"
+kotlinx-serialization = "1.7.3"
+spring-boot = "3.4.5"
+hibernate = "7.0.0.CR1"
+postgres = "42.7.5"
+jmh = "1.37"
+
+[libraries]
+# kotlin
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect" }
+
+# plugins dependency
+kotlin-jvm = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+kotlin-spring = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version = "2.2.0-Beta1" }
+kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin"}
+jmh = { module = "me.champeau.jmh:me.champeau.jmh.gradle.plugin", version = "0.7.3" }
+dependency-managment = { module = "io.spring.gradle:dependency-management-plugin", version = "1.1.7" }
+spring-boot = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
+hibernate = { module = "org.hibernate.orm:hibernate-gradle-plugin", version.ref = "hibernate" }
+
+# jmh
+jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
+jmh-generator-annprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
+
+# spring
+# annotation processor
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+
+# metrics
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+micrometr-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+
+# data
+spring-boot-startet-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+spring-data-envers = { module = "org.springframework.data:spring-data-envers" }
+liquibase-core = { module = "org.liquibase:liquibase-core" }
+postgresql = { module = "org.postgresql:postgresql" }
+
+# io
+spring-boot-starter-quartz = { module = "org.springframework.boot:spring-boot-starter-quartz" }
+spring-boot-starter-kafka = { module = "org.springframework.kafka:spring-kafka" }
+
+# web
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+
+# test
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
+
+# common
+spring-boot-docker-compose = { module = "org.springframework.boot:spring-boot-docker-compose" }
+spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
+
+# serialization
+gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id ="org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jmh = { id = "me.champeau.gradle.jmh", version = "0.7.2" }
+
+
+[bundles]
+plugins = [
+    "kotlin-jvm",
+    "kotlin-serialization",
+    "kotlin-spring",
+    "kotlin-allopen",
+    "jmh",
+    "dependency-managment",
+    "spring-boot",
+    "hibernate"
+]
+
+spring = [
+    "spring-boot-configuration-processor",
+    "spring-boot-starter-actuator",
+    "micrometr-registry-prometheus",
+    "spring-boot-startet-data-jpa",
+    "spring-boot-starter-data-redis",
+    "spring-data-envers",
+    "liquibase-core",
+    "postgresql",
+    "spring-boot-starter-quartz",
+    "spring-boot-starter-kafka",
+    "spring-boot-starter-web",
+    "spring-boot-starter-test",
+    "spring-kafka-test",
+    "spring-boot-docker-compose",
+    "spring-boot-devtools"
+]
