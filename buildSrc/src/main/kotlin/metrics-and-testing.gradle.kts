@@ -1,8 +1,8 @@
-import gradle.kotlin.dsl.accessors._96aa118a43afcb4b016ffc817e61dbf0.implementation
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
-   me.champeau.jmh
+    org.jetbrains.kotlin.jvm
+    me.champeau.jmh
 }
 
 val libs = the<LibrariesForLibs>()

@@ -1,7 +1,9 @@
-import gradle.kotlin.dsl.accessors._96aa118a43afcb4b016ffc817e61dbf0.implementation
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.kotlin.dsl.withType
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
+    org.jetbrains.kotlin.jvm
     io.spring.`dependency-management`
     org.springframework.boot
     org.hibernate
@@ -15,4 +17,8 @@ repositories {
 
 dependencies {
     implementation(libs.bundles.spring)
+}
+
+tasks.withType<BootJar> {
+    enabled = false
 }
