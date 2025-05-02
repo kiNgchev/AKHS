@@ -6,6 +6,8 @@ spring:
   docker:
     compose:
       file: ../env/compose.yaml
+  jpa:
+    open-in-view: false
 
 akhs:
   application:

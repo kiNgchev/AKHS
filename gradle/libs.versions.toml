@@ -3,6 +3,7 @@ kotlin = "2.0.0"
 kotlinx-coroutines = "1.9.0"
 kotlinx-serialization = "1.7.3"
 spring-boot = "3.4.5"
+spring-cloud = "4.2.2"
 hibernate = "7.0.0.CR1"
 postgres = "42.7.5"
 jmh = "1.37"
@@ -59,6 +60,11 @@ spring-kafka-test = { group = "org.springframework.kafka", name = "spring-kafka-
 spring-boot-docker-compose = { group = "org.springframework.boot", name = "spring-boot-docker-compose" }
 spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
 
+# cloud
+spring-cloud-config-server = { group = "org.springframework.cloud", name = "spring-cloud-config-server", version.ref = "spring-cloud" }
+spring-cloud-starter-config = { group = "org.springframework.cloud", name = "spring-cloud-starter-config", version.ref = "spring-cloud" }
+spring-cloud-bootstrap = { group = "org.springframework.cloud", name = "spring-cloud-starter-bootstrap", version = "4.2.1" }
+
 # serialization
 gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" }
 jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
@@ -96,5 +102,10 @@ spring = [
     "spring-boot-starter-test",
     "spring-kafka-test",
     "spring-boot-docker-compose",
-    "spring-boot-devtools"
+    "spring-boot-devtools",
+]
+
+spring-cloud = [
+    "spring-cloud-config-server",
+    "spring-cloud-starter-config",
 ]

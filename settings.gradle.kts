@@ -10,3 +10,5 @@ include("akhs-telegram")
 include("akhs-twitch")
 include("akhs-core")
 include("akhs-youtube")
+
+include("akhs-configurations")
