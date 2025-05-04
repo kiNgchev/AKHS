@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: akhs-discord
+  config:
+    # Check <your-name> and <your-password> in application.yaml in server config
+    import: configserver:http://<your-name>:<your-password>@localhost:8888

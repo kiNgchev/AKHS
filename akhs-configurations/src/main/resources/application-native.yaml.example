@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: akhs-configurations
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: ./config/{application}

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: akhs-configurations
+  cloud:
+    config:
+      server:
+        git:
+          ## You may read about other auth methods in [docs](https://docs.spring.io/spring-cloud-config/reference/)
+          uri: "your github ssh repository"
+          default-label: main
+          ignoreLocalSshSettings: true # Need if repository is private
+          strictHostKeyChecking: false  # Need if repository is private
+          private-key: | # Need if repository is private
+            -----BEGIN RSA PRIVATE KEY-----
+            # key...
+            -----END RSA PRIVATE KEY-----
+          passphrase: "your passphrase for key" # Need if repository is private
+          searchPaths:
+            - '{application}/{profile}'
+          clone-on-start: true

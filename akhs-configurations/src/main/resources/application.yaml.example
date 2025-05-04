@@ -1,0 +1,10 @@
+spring:
+  security:
+    user:
+      name: "your-name"
+      password: "your-password"
+      roles:
+        - CONFIG`
+
+server:
+  port: 8888

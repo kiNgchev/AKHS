@@ -2,7 +2,7 @@ package net.kingchev.discord.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "akhs.application")
+@ConfigurationProperties(prefix = "akhs.discord")
 class DiscordProperties {
     var token: String? = null
     var newsChannel: String? = null

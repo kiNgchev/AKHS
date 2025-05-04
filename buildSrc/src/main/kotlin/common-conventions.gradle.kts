@@ -19,12 +19,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(libs.kotlin.reflect)
-    implementation(libs.gson)
-    implementation(libs.jackson.module.kotlin)
-}
-
 kotlin {
     jvmToolchain(21)
 }

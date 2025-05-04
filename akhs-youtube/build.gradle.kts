@@ -1,6 +1,6 @@
 plugins {
-    `common-module`
-    spring
+    id("common-conventions")
+    id("spring-conventions")
     application
 }
 
