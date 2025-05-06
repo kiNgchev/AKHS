@@ -2,7 +2,6 @@ package net.kingchev.core.kafka
 
 import net.kingchev.core.model.CrosspostingMessage
 import net.kingchev.core.model.NotificationMessage
-import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.TopicConfig

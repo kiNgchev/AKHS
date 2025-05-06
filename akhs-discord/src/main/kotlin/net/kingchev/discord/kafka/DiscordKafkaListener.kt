@@ -18,16 +18,14 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
-import java.util.UUID
 import java.util.stream.Collectors
-import kotlin.toString
 
 @Service
 class DiscordKafkaListener(
     private val jda: JDA,
     private val properties: DiscordProperties,
 ) {
-    @KafkaListener(topics = [CROSSPOSTING], id = "discord-listener-crossposting")
+    @KafkaListener(topics = [CROSSPOSTING], id = "discord-listener-crossposting", clientIdPrefix = "1")
     fun handleCrossposting(
         @Payload message: CrosspostingMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
@@ -64,7 +62,7 @@ class DiscordKafkaListener(
         }
     }
 
-    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "discord-listener-twitch")
+    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "discord-listener-twitch", clientIdPrefix = "2")
     fun handleTwitchNotification(
         @Payload message: NotificationMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,

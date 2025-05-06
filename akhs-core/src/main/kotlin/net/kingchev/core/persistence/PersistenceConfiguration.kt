@@ -1,11 +1,9 @@
 package net.kingchev.core.persistence
 
-import net.kingchev.core.persistence.entity.Post
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.domain.AuditorAware
 import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories

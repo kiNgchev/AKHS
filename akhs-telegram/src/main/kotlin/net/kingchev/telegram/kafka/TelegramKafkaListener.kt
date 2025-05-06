@@ -25,7 +25,7 @@ class TelegramKafkaListener(
     private val telegramClient: ExtTelegramClient,
     private val properties: TelegramProperties,
 ) {
-    @KafkaListener(topics = [CROSSPOSTING], id = "telegram-listener-crossposting")
+    @KafkaListener(topics = [CROSSPOSTING], id = "telegram-listener-crossposting", clientIdPrefix = "3")
     fun handleCrossposting(
         @Payload message: CrosspostingMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
@@ -77,7 +77,7 @@ class TelegramKafkaListener(
         acknowledgment.acknowledge()
     }
 
-    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "telegram-listener-twitch")
+    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "telegram-listener-twitch", clientIdPrefix = "4")
     fun handleTwitchNotification(
         @Payload message: NotificationMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
