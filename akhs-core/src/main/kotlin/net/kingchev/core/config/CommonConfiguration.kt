@@ -3,11 +3,14 @@ package net.kingchev.core.config
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import liquibase.integration.spring.SpringLiquibase
+import net.kingchev.core.kafka.KafkaConfiguration
+import net.kingchev.core.persistence.PersistenceConfiguration
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.scheduling.annotation.EnableScheduling
 import javax.sql.DataSource
 
@@ -15,6 +18,7 @@ import javax.sql.DataSource
 @EnableScheduling
 @ConfigurationPropertiesScan(basePackages = ["net.kingchev"])
 @ComponentScan(basePackages = ["net.kingchev"])
+@Import(PersistenceConfiguration::class, KafkaConfiguration::class)
 @EnableConfigurationProperties
 class CommonConfiguration {
     @Bean
