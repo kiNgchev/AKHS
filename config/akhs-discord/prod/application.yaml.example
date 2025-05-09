@@ -1,0 +1,6 @@
+akhs:
+  application:
+    token: "your-prod-token"
+    news-channel: "your-prod-channel-id"
+    logs-channel: "your-prod-channel-id" # So far is useless
+    color: 0x7567ff #color must in hex-format

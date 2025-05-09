@@ -1,0 +1,6 @@
+akhs:
+  application:
+    token: "your-prod-token"
+    news-channel: "your-prod-channel-id"
+    username: "your-prod-bot-username"
+    logs-channel: "your-prod-channel-id" # So far is useless

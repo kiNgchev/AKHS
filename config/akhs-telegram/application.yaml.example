@@ -1,9 +1,0 @@
-akhs:
-  application:
-    token: "your-token"
-    news-channel: "your-channel-id"
-    username: "your-bot-username"
-    logs-channel: "your-channel-id" # So far is useless
-
-server:
-  port: 8081

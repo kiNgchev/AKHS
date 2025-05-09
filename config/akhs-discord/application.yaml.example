@@ -1,9 +1,0 @@
-akhs:
-  application:
-    token: "your-token"
-    news-channel: "your-channel-id"
-    logs-channel: "your-channel-id" # So far is useless
-    color: 0x7567ff #color must in hex-format
-
-server:
-  port: 8080

@@ -1,0 +1,9 @@
+akhs:
+  application:
+    tokens:
+      client-id: "your-prod-client-id"
+      client-secret: "your-prod-client-secret"
+      irc: "your-prod-irc"
+    twitch-channel:
+      - "your-channel-1"
+      - "your-channel-2"
