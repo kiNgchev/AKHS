@@ -9,7 +9,9 @@ enum class ContentType {
     VIDEO,
     AUDIO,
     VOICE,
-    DOCUMENT
+    DOCUMENT;
+
+    override fun toString(): String = this.name.lowercase()
 }
 
 data class Attachment(

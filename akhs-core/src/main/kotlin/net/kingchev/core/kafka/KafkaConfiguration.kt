@@ -131,6 +131,7 @@ class KafkaConfiguration {
             map[ProducerConfig.RETRIES_CONFIG] = 2
             map[ProducerConfig.CLIENT_ID_CONFIG] = "akhs"
             map[ProducerConfig.MAX_REQUEST_SIZE_CONFIG] = "104857600"
+            map[ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG] = 60000
             map[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
             map[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
             return map
