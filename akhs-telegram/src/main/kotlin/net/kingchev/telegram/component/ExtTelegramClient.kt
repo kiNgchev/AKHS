@@ -2,61 +2,67 @@ package net.kingchev.telegram.component
 
 import net.kingchev.core.kafka.CROSSPOSTING
 import net.kingchev.core.model.Attachment
-import net.kingchev.core.model.ContentType
 import net.kingchev.core.model.CrosspostingMessage
+import net.kingchev.telegram.component.processor.TelegramUpdateProcessor
 import net.kingchev.telegram.config.TelegramProperties
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
-import org.telegram.telegrambots.bots.DefaultBotOptions
-import org.telegram.telegrambots.bots.TelegramLongPollingBot
-import org.telegram.telegrambots.meta.TelegramBotsApi
-import org.telegram.telegrambots.meta.api.methods.GetFile
-import org.telegram.telegrambots.meta.api.objects.File
+import org.springframework.stereotype.Component
+import org.telegram.telegrambots.longpolling.BotSession
+import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer
+import org.telegram.telegrambots.longpolling.starter.AfterBotRegistration
+import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot
+import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.generics.TelegramClient
 
+
+@Component
 class ExtTelegramClient(
     private val props: TelegramProperties,
-    telegramApi: TelegramBotsApi,
+    private val telegramApi: TelegramClient,
     private val kafkaTemplate: KafkaTemplate<String, CrosspostingMessage>
-) : TelegramLongPollingBot(DefaultBotOptions(), props.token) {
+) : LongPollingSingleThreadUpdateConsumer, SpringLongPollingBot {
+    private val token = props.token!!
+
     init {
-        telegramApi.registerBot(this)
-        logger.info("Telegram client $botUsername has been started!")
+        logger.info("Telegram client ${props.username} has been started!")
     }
 
-    override fun getBotUsername(): String =
-        props.username ?: throw NullPointerException("Username is mustn't be null!")
+    override fun consume(update: Update) = singleUpdate(update)
 
-    override fun onUpdateReceived(update: Update) {
-        if (update.channelPost == null) return
+    override fun consume(updates: MutableList<Update>) {
+        if (updates.size == 1)
+            return singleUpdate(updates[0])
+
+        val mediaGroupId = updates.first().channelPost.mediaGroupId
+        val medias = updates.stream()
+            .map {
+                val processor = TelegramUpdateProcessor.getProcessor(it)
+                processor.processAttachment(telegramApi, token, it)
+            }
+            .toList()
+
+        val post = CrosspostingMessage(
+            updates.first().channelPost.messageId.toString(),
+            "telegram",
+            "From Telegram",
+            updates.first().channelPost?.text ?: updates.first().channelPost?.caption ?: "",
+            medias
+        )
+        kafkaTemplate.send(CROSSPOSTING, "telegram-message", post)
+            .thenAccept { logger.info("Message with id $mediaGroupId was be produced") }
+    }
+
+    private fun singleUpdate(update: Update) {
+        if (update.channelPost == null)
+            return
+
         val messageId = update.channelPost?.messageId.toString()
-
         val attachments = mutableListOf<Attachment>()
-
-        if (update.channelPost.hasPhoto()) {
-            val attachment = processAttachment(update.channelPost.photo.last().fileId, ContentType.IMAGE)
-            attachments.add(attachment)
-        }
-
-        if (update.channelPost.hasAudio()) {
-            val attachment = processAttachment(update.channelPost.audio.fileId, ContentType.AUDIO)
-            attachments.add(attachment)
-        }
-
-        if (update.channelPost.hasVideo()) {
-            val attachment = processAttachment(update.channelPost.video.fileId, ContentType.VIDEO)
-            attachments.add(attachment)
-        }
-
-        if (update.channelPost.hasVoice()) {
-            val attachment = processAttachment(update.channelPost.voice.fileId, ContentType.VOICE, "duration" to update.channelPost.voice.duration)
-            attachments.add(attachment)
-        }
-
-        if (update.channelPost.hasDocument()) {
-            val attachment = processAttachment(update.channelPost.document.fileId, ContentType.DOCUMENT)
-            attachments.add(attachment)
-        }
+        val processor = TelegramUpdateProcessor.getProcessor(update)
+        val attachment = processor.processAttachment(telegramApi, token, update)
+        attachments.add(attachment)
 
         val post = CrosspostingMessage(
             messageId,
@@ -70,52 +76,13 @@ class ExtTelegramClient(
             .thenAccept { logger.info("Message with id $messageId was be produced") }
     }
 
-    override fun onUpdatesReceived(updates: MutableList<Update>) {
-        if (updates.size == 1) {
-            return onUpdateReceived(updates.first())
-        }
+    override fun getBotToken(): String? = props.token
 
-        val mediaGroupId = updates.first().channelPost.mediaGroupId
+    override fun getUpdatesConsumer(): LongPollingUpdateConsumer? = this
 
-        val medias = mutableListOf<Attachment>()
-        updates.parallelStream()
-            .forEach {
-                val post = it.channelPost
-
-                if (post.hasPhoto()) medias.add(processAttachment(it.channelPost.photo.last().fileId, ContentType.IMAGE))
-
-                if (post.hasAudio()) medias.add(processAttachment(it.channelPost.audio.fileId, ContentType.AUDIO))
-
-                if (post.hasVideo()) medias.add(processAttachment(it.channelPost.video.fileId, ContentType.VIDEO))
-
-                if (post.hasVoice()) medias.add(processAttachment(it.channelPost.voice.fileId, ContentType.VOICE, "duration" to it.channelPost.voice.duration))
-
-                if (post.hasDocument()) medias.add(processAttachment(post.document.fileId, ContentType.DOCUMENT))
-
-            }
-
-        val post = CrosspostingMessage(
-            updates.first().channelPost.messageId.toString(),
-            "telegram",
-            "From Telegram",
-            updates.first().channelPost?.text ?: updates.first().channelPost?.caption ?: "",
-            medias
-        )
-        kafkaTemplate.send(CROSSPOSTING, "telegram-message", post)
-            .thenAccept { logger.info("Message with id $mediaGroupId was be produced") }
-    }
-
-    private fun getFile(fileId: String): File {
-        return execute(GetFile(fileId))
-    }
-
-    private fun processAttachment(fileId: String, type: ContentType, vararg objects: Pair<String, Any>): Attachment {
-        val fileName = getFile(fileId)
-            .getFileUrl(this.props.token)
-            .split("/")
-            .last()
-        val attachment = downloadFile(getFile(fileId), java.io.File("/temp/${fileName}"))
-        return Attachment(attachment.name, type, attachment.readBytes(), hashMapOf(*objects))
+    @AfterBotRegistration
+    fun afterRegistration(botSession: BotSession) {
+        logger.info("Registered bot running state is: " + botSession.isRunning)
     }
 
     companion object {
