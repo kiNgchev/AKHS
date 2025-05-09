@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.utils.FileUpload
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder
 import net.kingchev.core.kafka.CROSSPOSTING
 import net.kingchev.core.kafka.TWITCH_NOTIFICATION
+import net.kingchev.core.model.ContentType
 import net.kingchev.core.model.CrosspostingMessage
 import net.kingchev.core.model.NotificationMessage
 import net.kingchev.discord.config.DiscordProperties
@@ -25,7 +26,7 @@ class DiscordKafkaListener(
     private val jda: JDA,
     private val properties: DiscordProperties,
 ) {
-    @KafkaListener(topics = [CROSSPOSTING], id = "discord-listener-crossposting", clientIdPrefix = "1")
+    @KafkaListener(topics = [CROSSPOSTING], id = "discord-listener-crossposting", clientIdPrefix = "1", groupId = "discord-listeners")
     fun handleCrossposting(
         @Payload message: CrosspostingMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
@@ -40,6 +41,7 @@ class DiscordKafkaListener(
         val postBuilder = MessageCreateBuilder()
 
         val attachments = message.attachments.parallelStream()
+            .filter { it.contentType != ContentType.UNDEFINED }
             .map { FileUpload.fromData(ByteArrayInputStream(it.bytes), it.fileName) }
             .collect(Collectors.toUnmodifiableList())
 
@@ -62,7 +64,7 @@ class DiscordKafkaListener(
         }
     }
 
-    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "discord-listener-twitch", clientIdPrefix = "2")
+    @KafkaListener(topics = [TWITCH_NOTIFICATION], id = "discord-listener-twitch", clientIdPrefix = "2", groupId = "discord-listeners")
     fun handleTwitchNotification(
         @Payload message: NotificationMessage,
         @Header(KafkaHeaders.RECEIVED_TOPIC) topic: String,
