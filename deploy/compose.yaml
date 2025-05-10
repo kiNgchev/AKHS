@@ -1,4 +1,4 @@
-name: 'akhs-env'
+name: 'akhs-deploy'
 
 services:
   zookeeper:

@@ -1,2 +1,3 @@
 databaseChangeLog:
-  - 
+  - include:
+      file: classpath:/quartz/liquibase.quartz.init.xml
