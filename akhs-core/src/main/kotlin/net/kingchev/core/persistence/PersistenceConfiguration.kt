@@ -45,7 +45,6 @@ class PersistenceConfiguration {
 
     fun jpaProperties(): Properties {
         val properties = Properties()
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop")
         return properties
     }
 }

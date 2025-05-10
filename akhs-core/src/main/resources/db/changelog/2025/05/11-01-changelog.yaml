@@ -1,0 +1,104 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1746951129094-1
+      author: kiNgchev
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 50
+            sequenceName: revinfo_seq
+            startValue: 1
+  - changeSet:
+      id: 1746951129094-2
+      author: kiNgchev
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_posts
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: source
+                  type: VARCHAR(255)
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: content
+                  type: VARCHAR(255)
+              - column:
+                  name: attachments
+                  type: jsonb
+            tableName: posts
+  - changeSet:
+      id: 1746951129094-3
+      author: kiNgchev
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_posts_aud
+                  name: rev
+                  type: INT
+              - column:
+                  name: revtype
+                  type: SMALLINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_posts_aud
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: source
+                  type: VARCHAR(255)
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: content
+                  type: VARCHAR(255)
+              - column:
+                  name: attachments
+                  type: jsonb
+            tableName: posts_aud
+  - changeSet:
+      id: 1746951129094-4
+      author: kiNgchev
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_revinfo
+                  name: rev
+                  type: INT
+              - column:
+                  name: revtstmp
+                  type: BIGINT
+            tableName: revinfo
+  - changeSet:
+      id: 1746951129094-5
+      author: kiNgchev
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: rev
+            baseTableName: posts_aud
+            constraintName: FK_POSTS_AUD_ON_REV
+            referencedColumnNames: rev
+            referencedTableName: revinfo
+

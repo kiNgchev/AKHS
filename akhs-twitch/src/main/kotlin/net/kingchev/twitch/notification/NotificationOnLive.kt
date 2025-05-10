@@ -5,6 +5,7 @@ import com.github.twitch4j.events.ChannelGoLiveEvent
 import net.kingchev.core.kafka.TWITCH_NOTIFICATION
 import net.kingchev.core.model.NotificationMessage
 import net.kingchev.core.model.NotificationType
+import net.kingchev.twitch.component.TextFormatter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
@@ -25,7 +26,7 @@ class NotificationOnLive(
             "twitch${event.stream.id}",
             "twitch",
             event.channel.name,
-            "${event.channel.name} Запустил трансляцию ${event.stream.title}\nНе пропусти! $url",
+            TextFormatter.format(event),
             url,
             NotificationType.LIVE_NOTIFICATION
         )

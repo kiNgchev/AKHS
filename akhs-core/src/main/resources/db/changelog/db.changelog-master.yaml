@@ -1,2 +1,5 @@
 databaseChangeLog:
-  - 
+  - include:
+      file: classpath:/quartz/liquibase.quartz.init.xml
+  - include:
+      file: classpath:/db/changelog/2025/05/11-01-changelog.yaml
