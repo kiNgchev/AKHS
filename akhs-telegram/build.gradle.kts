@@ -12,5 +12,5 @@ dependencies {
 }
 
 application {
-    mainClass = "net.kingchev.telegram.Launcher"
+    mainClass = "net.kingchev.telegram.LauncherKt"
 }

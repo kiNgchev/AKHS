@@ -101,7 +101,8 @@ class KafkaConfiguration {
     }
 
     companion object {
-        private val bootstrapServers = listOf("localhost:9092")
+        private val bootstrapServers = System.getenv("KAFKA_BOOTSTRAP_SERVERS")?.split(";")
+            ?: listOf("localhost:9092")
 
         private fun topicProps(): Map<String, String> {
             val map: MutableMap<String, String> = HashMap()

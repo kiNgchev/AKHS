@@ -10,5 +10,5 @@ dependencies {
 }
 
 application {
-    mainClass = "net.kingchev.twitch.Launcher"
+    mainClass = "net.kingchev.twitch.LauncherKt"
 }

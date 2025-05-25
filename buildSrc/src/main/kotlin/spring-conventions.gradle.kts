@@ -13,7 +13,3 @@ repositories {
     maven { url = uri("https://repo.spring.io/snapshot") }
     maven { url = uri("https://repo.spring.io/milestone") }
 }
-
-tasks.withType<BootJar> {
-    enabled = false
-}

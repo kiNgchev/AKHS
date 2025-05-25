@@ -25,6 +25,7 @@ jmh = { module = "me.champeau.jmh:me.champeau.jmh.gradle.plugin", version.ref = 
 dependency-managment = { module = "io.spring.gradle:dependency-management-plugin", version = "1.1.7" }
 spring-boot = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot" }
 hibernate = { module = "org.hibernate.orm:hibernate-gradle-plugin", version.ref = "hibernate" }
+shadow = { module = "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin", version = "8.1.1" }
 
 # jmh
 jmh-core = { group = "org.openjdk.jmh", name = "jmh-core", version.ref = "jmh" }
@@ -86,7 +87,8 @@ plugins = [
     "jmh",
     "dependency-managment",
     "spring-boot",
-    "hibernate"
+    "hibernate",
+    "shadow"
 ]
 
 spring = [

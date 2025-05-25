@@ -20,13 +20,20 @@ import javax.sql.DataSource
 @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = [DataSourceAutoConfiguration::class])
 class PersistenceConfiguration {
+    private object DatabaseConnection {
+        var username = System.getenv("POSTGRES_USER") ?: "postgres"
+        var password = System.getenv("POSTGRES_PASSWORD") ?: "secret"
+        var database = System.getenv("POSTGRES_DATABASE") ?: "akhs"
+        var host = System.getenv("POSTGRES_HOST") ?: "localhost"
+        var port = System.getenv("POSTGRES_PORT") ?: "5432"
+    }
     @Bean
     fun dataSource(): DataSource {
         val dataSource = DriverManagerDataSource()
         dataSource.setDriverClassName("org.postgresql.Driver")
-        dataSource.username = "postgres"
-        dataSource.password = "secret"
-        dataSource.url = "jdbc:postgresql://localhost:5432/akhs?createDatabaseIfNotExist=true"
+        dataSource.username = DatabaseConnection.username
+        dataSource.password = DatabaseConnection.password
+        dataSource.url = "jdbc:postgresql://${DatabaseConnection.host}:${DatabaseConnection.port}/${DatabaseConnection.database}?createDatabaseIfNotExist=true"
         return dataSource
     }
 

@@ -9,5 +9,5 @@ dependencies {
 }
 
 application {
-    mainClass = "net.kingchev.youtube.Launcher"
+    mainClass = "net.kingchev.youtube.LauncherKt"
 }

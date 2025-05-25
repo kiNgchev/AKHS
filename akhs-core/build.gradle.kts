@@ -11,3 +11,9 @@ dependencies {
     api(libs.gson)
     api(libs.jackson.module.kotlin)
 }
+
+tasks {
+    bootJar {
+        enabled = false
+    }
+}

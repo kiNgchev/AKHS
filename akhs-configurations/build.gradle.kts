@@ -14,5 +14,5 @@ dependencies {
 }
 
 application {
-    mainClass = "net.kingchev.configurations.Launcher"
+    mainClass = "net.kingchev.configurations.LauncherKt"
 }

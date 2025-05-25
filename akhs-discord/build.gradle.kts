@@ -10,5 +10,5 @@ dependencies {
 }
 
 application {
-    mainClass = "net.kingchev.discord.Launcher"
+    mainClass = "net.kingchev.discord.LauncherKt"
 }
