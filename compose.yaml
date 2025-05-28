@@ -96,10 +96,17 @@ services:
       SPRING_PROFILES_ACTIVE: cloud,dev
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
+      REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
     networks:
       - akhs
       - kafka
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+
 
   akhs-telegram:
     restart: always
@@ -113,10 +120,17 @@ services:
       SPRING_PROFILES_ACTIVE: cloud,dev
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
+      REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
     networks:
       - akhs
       - kafka
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+
 
   akhs-twitch:
     restart: always
@@ -130,10 +144,17 @@ services:
       SPRING_PROFILES_ACTIVE: cloud,dev
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
+      REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
     networks:
       - akhs
       - kafka
+    healthcheck:
+      test: "curl --fail --silent localhost:8082/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+
 
   akhs-youtube:
     restart: always
@@ -147,10 +168,17 @@ services:
       SPRING_PROFILES_ACTIVE: cloud,dev
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
+      REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
     networks:
       - akhs
       - kafka
+    healthcheck:
+      test: "curl --fail --silent localhost:8083/actuator/health | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      start_period: 40s
+
 
 networks:
   kafka:

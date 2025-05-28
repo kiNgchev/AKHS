@@ -1,3 +1,7 @@
+# AKHS 
+AKHS — is a collection of services for automation tasks, written on Kotlin with Spring Framework\
+All services linked with each other with the help of [Apache Kafka](https://kafka.apache.org/)
+
 # Environment variables
 In the following, env variables will be described in format: `VARIBALE_NAME:default_value — value_description`
 
@@ -17,7 +21,11 @@ In the following, env variables will be described in format: `VARIBALE_NAME:defa
 - `POSTGRES_HOST:localhost` — the host on which located database server
 - `POSTGRES_PORT:5432` — the port through which connect to database server
 ### Apache Kafka
-- `KAFKA_BOOTSTRAP_SERVERS`:`localhost:9092` — the bootstrap servers for connecting to Apache Kafka. Bootstrap servers will be storage in format: `host1:9092,host2:9093,host3:29092`
+- `KAFKA_BOOTSTRAP_SERVERS:localhost:9092` — the bootstrap servers for connecting to Apache Kafka. Bootstrap servers will be storage in format: `host1:9092,host2:9093,host3:29092`
+### Redis
+- `REDIS_HOST:localhost` — the host on which located Redis server
+- `REDIS_PORT:6379` — the port through which connect to Redis server
+
 ---
 # Build
 To build JAR files, you should run:
@@ -99,8 +107,3 @@ The expression `cloud | local, dev | prod` equals the next expression: `(cloud o
 | akhs-youtube        | cloud \| local, dev \| prod |
 
 ---
-If you change the `native` profile to `akhs-configurations`,
-you should change the `local` profile for `akhs-discord`, `akhs-telegram`, `akhs-twitch`, `akhs-youtube`
-
-If you change the `git` profile to `akhs-configurations`,
-you should change the `cloud` profile for `akhs-discord`, `akhs-telegram`, `akhs-twitch`, `akhs-youtube`

@@ -51,6 +51,7 @@ gradle-app.setting
 .gradletasknamecache
 .project
 .classpath
+.run
 
 config/**/*.yaml
 **/resources/*.yaml

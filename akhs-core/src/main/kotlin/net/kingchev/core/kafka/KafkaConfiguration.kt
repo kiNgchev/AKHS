@@ -1,5 +1,6 @@
 package net.kingchev.core.kafka
 
+import net.kingchev.core.getenv
 import net.kingchev.core.model.CrosspostingMessage
 import net.kingchev.core.model.NotificationMessage
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -34,7 +35,7 @@ const val YOUTUBE_NOTIFICATION = "akhs.youtube.notification"
 )
 @EnableAutoConfiguration(exclude = [KafkaAutoConfiguration::class])
 class KafkaConfiguration {
-    class Topics {
+    object Topics {
         @Bean
         fun topicCrossposting() = TopicBuilder
             .name(CROSSPOSTING)
@@ -54,7 +55,7 @@ class KafkaConfiguration {
             .build()
     }
 
-    class Crossposting {
+    object Crossposting {
         @Bean
         fun kafkaTemplate() = KafkaTemplate(producerFactory())
 
@@ -77,7 +78,7 @@ class KafkaConfiguration {
                 .apply(kafkaListenerContainerFactory(consumerFactory()))
     }
 
-    class TwitchNotification {
+    object TwitchNotification {
         @Bean
         fun kafkaTemplateTwitch() =
             KafkaTemplate(producerFactoryTwitch())
@@ -101,7 +102,7 @@ class KafkaConfiguration {
     }
 
     companion object {
-        private val bootstrapServers = System.getenv("KAFKA_BOOTSTRAP_SERVERS")?.split(";")
+        private val bootstrapServers = getenv("KAFKA_BOOTSTRAP_SERVERS")?.split(";")
             ?: listOf("localhost:9092")
 
         private fun topicProps(): Map<String, String> {

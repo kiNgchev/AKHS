@@ -3,6 +3,7 @@ package net.kingchev.core.config
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import liquibase.integration.spring.SpringLiquibase
+import net.kingchev.core.cache.ExtRedisConfiguration
 import net.kingchev.core.kafka.KafkaConfiguration
 import net.kingchev.core.persistence.PersistenceConfiguration
 import net.kingchev.core.quartz.QuartzConfiguration
@@ -19,19 +20,16 @@ import javax.sql.DataSource
 @EnableScheduling
 @ConfigurationPropertiesScan(basePackages = ["net.kingchev"])
 @ComponentScan(basePackages = ["net.kingchev"])
-@Import(PersistenceConfiguration::class, KafkaConfiguration::class, QuartzConfiguration::class)
+@Import(PersistenceConfiguration::class, KafkaConfiguration::class, QuartzConfiguration::class, ExtRedisConfiguration::class)
 @EnableConfigurationProperties
 class CommonConfiguration {
     @Bean
     fun gson(): Gson = GsonBuilder().create()
 
-    //Configuring liquibase spring bean
     @Bean
     fun liquibase(datasource: DataSource): SpringLiquibase {
         val props = SpringLiquibase()
-        //setting the datasource
         props.dataSource = datasource
-        //setting the path to changelog
         props.changeLog = "classpath:/db/changelog/db.changelog-master.yaml"
         return props
     }
