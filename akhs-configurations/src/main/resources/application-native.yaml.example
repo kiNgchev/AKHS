@@ -5,4 +5,4 @@ spring:
     config:
       server:
         native:
-          search-locations: ./config/{application}
+          search-locations: ./config/akhs/{application}

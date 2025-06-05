@@ -5,13 +5,20 @@ All services linked with each other with the help of [Apache Kafka](https://kafk
 # Environment variables
 In the following, env variables will be described in format: `VARIBALE_NAME:default_value — value_description`
 
+- `LOKI` — the URL for Loki service
+
 ---
 ## akhs-configurations
 - `CONFIG_SERVER_USER:config` — the username that will be set as value to get access to config server
 - `CONFIG_SERVER_PASSWORD:config-password` — the password that will be set as value to get access to config server 
 ---
 ## akhs-discord, akhs-telegram, akhs-twitch, akhs-youtube
+### Admin server
+- `ADMIN_SERVER_HOST:localhost` — the host on which located admin server
+- `ADMIN_SERVER_PORT:9999` — the port through which connect to admin server
 ### Config server
+- `CONFIG_SERVER_HOST:localhost` — the host on which located config server
+- `CONFIG_SERVER_PORT:8888` — the port through which connect to config server
 - `CONFIG_SERVER_USER:config` — the username that needed to get access to config server
 - `CONFIG_SERVER_PASSWORD:config-password` — the password that needed to get access to config server
 ### Database (Postgres)
@@ -25,6 +32,10 @@ In the following, env variables will be described in format: `VARIBALE_NAME:defa
 ### Redis
 - `REDIS_HOST:localhost` — the host on which located Redis server
 - `REDIS_PORT:6379` — the port through which connect to Redis server
+
+---
+# Metrics
+In this project Prometheus, Grafana, Loki are used. You should run it services.
 
 ---
 # Build
@@ -90,6 +101,10 @@ For run AKHS, you should run:
 ```Bash
   docker-compose up
 ```
+
+---
+## With Kubernetes
+So far empty...
 
 ---
 # Profiles

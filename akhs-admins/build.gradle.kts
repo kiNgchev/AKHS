@@ -7,14 +7,14 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.spring.cloud.config.server)
+    implementation(libs.spring.boot.admin.server)
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.actuator)
-    implementation(libs.spring.boot.starter.security)
+    implementation(libs.micrometr.registry.prometheus)
     implementation(libs.logback.loki)
     implementation(libs.janino)
 }
 
 application {
-    mainClass = "net.kingchev.configurations.LauncherKt"
+    mainClass = "net.kingchev.admins.LauncherKt"
 }

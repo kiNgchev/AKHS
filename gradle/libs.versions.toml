@@ -38,6 +38,8 @@ spring-boot-configuration-processor = { group = "org.springframework.boot", name
 # metrics
 spring-boot-starter-actuator = { group = "org.springframework.boot", name = "spring-boot-starter-actuator" }
 micrometr-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+logback-loki = { group = "com.github.loki4j", name = "loki-logback-appender", version = "1.4.1" }
+janino = { group = "org.codehaus.janino", name = "janino" }
 
 # data
 spring-boot-startet-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
@@ -55,10 +57,13 @@ spring-boot-starter-kafka = { group = "org.springframework.kafka", name = "sprin
 
 # web
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+spring-boot-admin-server = { group = "de.codecentric", name = "spring-boot-admin-starter-server", version.ref = "spring-boot" }
+spring-boot-admin-client = { group = "de.codecentric", name = "spring-boot-admin-starter-client", version.ref = "spring-boot" }
 
 # test
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
 spring-kafka-test = { group = "org.springframework.kafka", name = "spring-kafka-test" }
+testcontainers-kafka = { group = "org.testcontainers", name = "kafka", version = "1.21.0" }
 
 # common
 spring-boot-docker-compose = { group = "org.springframework.boot", name = "spring-boot-docker-compose" }
@@ -100,20 +105,19 @@ spring = [
     "spring-data-envers",
     "liquibase-core",
     "postgresql",
+    "logback-loki",
+    "janino",
     "spring-boot-starter-quartz",
     "spring-boot-starter-kafka",
     "spring-boot-starter-web",
-    "spring-boot-starter-test",
-    "spring-kafka-test",
     "spring-boot-devtools",
-]
-
-spring-cloud = [
-    "spring-cloud-config-server",
-    "spring-cloud-starter-config",
+    "spring-boot-admin-client"
 ]
 
 metrics-and-testing = [
     "jmh-core",
-    "jmh-generator-annprocess"
+    "jmh-generator-annprocess",
+    "spring-kafka-test",
+    "spring-boot-starter-test",
+    "testcontainers-kafka"
 ]

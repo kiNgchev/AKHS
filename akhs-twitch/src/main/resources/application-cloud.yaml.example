@@ -2,8 +2,14 @@ server:
   port: 8082
 
 spring:
+  boot:
+    admin:
+      client:
+        instance:
+          name: akhs-twitch
+          service-host-type: ip
+        url: http://${admin.server.host:localhost}:${admin.server.port:9999}
   application:
-    name: akhs-discord
+    name: akhs-twitch
   config:
-    # Check <your-name> and <your-password> in application.yaml in server config
-    import: configserver:http://<your-name>:<your-password>@localhost:8888
+    import: configserver:http://${config.server.user:config}:${config.server.password:config-password}@${config.server.host:localhost}:${config.server.port:8888}

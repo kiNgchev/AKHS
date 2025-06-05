@@ -34,9 +34,9 @@ services:
       - "8090:8080"
     restart: always
     environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=host.docker.internal:9092
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: host.docker.internal:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
     links:
       - kafka
       - zookeeper
@@ -47,10 +47,10 @@ services:
     image: postgres:latest
     shm_size: 128mb
     environment:
-      - POSTGRES_DB=akhs
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_USER=postgres
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      POSTGRES_DB: akhs
+      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -71,22 +71,66 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml"
+      - "./data/prometheus:/prometheus"
+    networks:
+      - monitoring
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    environment:
+      GF_SECURITY_ADMIN_USER: grafana
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./data/grafana:/var/lib/grafana"
+      - "./config/grafana/provisioning:/etc/grafana/provisioning"
+    networks:
+      - monitoring
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    networks:
+      - monitoring
 
   akhs-configuration:
+    restart: always
+    depends_on:
+      - akhs-admins
     build:
       dockerfile: Dockerfile
       args:
         JAR_FILE: akhs-configurations/build/libs/akhs-configurations-0.0.1.jar
     environment:
       SPRING_PROFILES_ACTIVE: git
+      LOKI: http://host.docker.internal:3100
     networks:
       - akhs
     ports:
       - "8888:8888"
 
+  akhs-admins:
+    build:
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: akhs-admins/build/libs/akhs-admins-0.0.1.jar
+    environment:
+      LOKI: http://host.docker.internal:3100
+    networks:
+      - akhs
+    ports:
+      - "9999:9999"
+
   akhs-discord:
     restart: always
     depends_on:
+      - akhs-admins
       - akhs-configuration
     build:
       dockerfile: Dockerfile
@@ -94,23 +138,27 @@ services:
         JAR_FILE: akhs-discord/build/libs/akhs-discord-0.0.1.jar
     environment:
       SPRING_PROFILES_ACTIVE: cloud,dev
+      ADMIN_SERVER_HOST: host.docker.internal
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
       REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
+      LOKI: http://host.docker.internal:3100
     networks:
       - akhs
       - kafka
+    ports:
+      - "8080:8080"
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       start_period: 40s
 
-
   akhs-telegram:
     restart: always
     depends_on:
+      - akhs-admins
       - akhs-configuration
     build:
       dockerfile: Dockerfile
@@ -118,23 +166,27 @@ services:
         JAR_FILE: akhs-telegram/build/libs/akhs-telegram-0.0.1.jar
     environment:
       SPRING_PROFILES_ACTIVE: cloud,dev
+      ADMIN_SERVER_HOST: host.docker.internal
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
       REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
+      LOKI: http://host.docker.internal:3100
     networks:
       - akhs
       - kafka
+    ports:
+      - "8081:8081"
     healthcheck:
       test: "curl --fail --silent localhost:8081/actuator/health | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       start_period: 40s
 
-
   akhs-twitch:
     restart: always
     depends_on:
+      - akhs-admins
       - akhs-configuration
     build:
       dockerfile: Dockerfile
@@ -142,23 +194,27 @@ services:
         JAR_FILE: akhs-twitch/build/libs/akhs-twitch-0.0.1.jar
     environment:
       SPRING_PROFILES_ACTIVE: cloud,dev
+      ADMIN_SERVER_HOST: host.docker.internal
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
       REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
+      LOKI: http://host.docker.internal:3100
     networks:
       - akhs
       - kafka
+    ports:
+      - "8082:8082"
     healthcheck:
       test: "curl --fail --silent localhost:8082/actuator/health | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       start_period: 40s
 
-
   akhs-youtube:
     restart: always
     depends_on:
+      - akhs-admins
       - akhs-configuration
     build:
       dockerfile: Dockerfile
@@ -166,24 +222,28 @@ services:
         JAR_FILE: akhs-youtube/build/libs/akhs-youtube-0.0.1.jar
     environment:
       SPRING_PROFILES_ACTIVE: cloud,dev
+      ADMIN_SERVER_HOST: host.docker.internal
       CONFIG_SERVER_HOST: host.docker.internal
       POSTGRES_HOST: host.docker.internal
       REDIS_HOST: host.docker.internal
       KAFKA_BOOTSTRAP_SERVERS: host.docker.internal:9092
+      LOKI: http://host.docker.internal:3100
     networks:
       - akhs
       - kafka
+    ports:
+      - "8083:8083"
     healthcheck:
       test: "curl --fail --silent localhost:8083/actuator/health | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       start_period: 40s
 
-
 networks:
   kafka:
     driver: bridge
   akhs:
     driver: bridge
-
+  monitoring:
+    name: monitoring
 

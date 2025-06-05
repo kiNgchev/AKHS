@@ -10,6 +10,8 @@ dependencies {
     api(libs.spring.cloud.starter.config)
     api(libs.gson)
     api(libs.jackson.module.kotlin)
+    testImplementation(libs.bundles.metrics.and.testing)
+    testImplementation(kotlin("test"))
 }
 
 tasks {
